@@ -1,6 +1,29 @@
 'use client'
 
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
+
 export default function Login() {
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+	const router = useRouter()
+
+	const onSubmit = async (e: React.FormEvent) => {
+		e.preventDefault()
+		const result = await signIn('credentials', {
+			email,
+			password,
+			redirect: false,
+		})
+		console.log(result)
+		if (result?.error) {
+			console.error(result.error)
+		} else {
+			router.push('/')
+		}
+	}
+
 	const inputStyle =
 		'block w-full rounded-md border border-gary-200 py-3 pl-5 text-sm outline-2 placeholder:text-gray-500'
 
@@ -10,7 +33,7 @@ export default function Login() {
 				<div className="flex items-center h-6 p-6 bg-blue-600 text-white rounded-md ">
 					로그인
 				</div>
-				<form className="space-y-3">
+				<form onSubmit={onSubmit} className="space-y-3">
 					<div className="flex-1 px-6 pt-2 pb-4 rounded-lg bg-gray-50">
 						<div className="w-full">
 							<div>
@@ -25,6 +48,8 @@ export default function Login() {
 										className={inputStyle}
 										id="email"
 										type="email"
+										value={email}
+										onChange={(e) => setEmail(e.target.value)}
 										placeholder="이메일 주소를 입력하세요."
 										required
 									/>
@@ -42,6 +67,8 @@ export default function Login() {
 										className={inputStyle}
 										id="password"
 										type="password"
+										value={password}
+										onChange={(e) => setPassword(e.target.value)}
 										placeholder="비밀번호를 입력하세요."
 										required
 									/>
