@@ -7,4 +7,23 @@ export async function getUser(email: string) {
 	return rows[0]
 }
 
-export { sql }
+export async function checkEmailExists(email: string) {
+	const result = await sql`SELECT * FROM users WHERE email = ${email}`
+	return result.rows.length > 0
+}
+
+export async function createUser(
+	email: string,
+	hashedPassword: string,
+	username: string
+) {
+	try {
+		await sql`
+      INSERT INTO users (email, password, username)
+      VALUES (${email}, ${hashedPassword}, ${username})
+    `
+	} catch (error) {
+		console.error('회원가입 실패:', error)
+		throw error
+	}
+}
