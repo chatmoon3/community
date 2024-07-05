@@ -10,7 +10,7 @@ export default function LoginForm() {
 	const [message, setMessage] = useState('')
 	const router = useRouter()
 
-	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		setMessage('')
 
@@ -41,7 +41,7 @@ export default function LoginForm() {
 				<div className="flex items-center h-6 p-6 bg-blue-600 text-white rounded-md ">
 					로그인
 				</div>
-				<form onSubmit={onSubmit} className="space-y-3">
+				<form onSubmit={handleSubmit} className="space-y-3">
 					<div className="flex-1 px-6 pt-2 pb-4 rounded-lg bg-gray-50">
 						<div className="w-full">
 							<div>

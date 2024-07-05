@@ -11,9 +11,9 @@ export async function signUp(prevState: any, formData: FormData) {
 	const username = formData.get('username') as string
 
 	// html 입력 유효성 검사로 필요없음
-	if (!email || !password || !confirmPassword || !username) {
-		return { message: '모든 필드를 입력해주세요.' }
-	}
+	// if (!email || !password || !confirmPassword || !username) {
+	// 	return { message: '모든 필드를 입력해주세요.' }
+	// }
 
 	if (await checkEmailExists(email)) {
 		return { message: '이미 가입된 이메일입니다.' }
