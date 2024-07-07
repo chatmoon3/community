@@ -3,16 +3,16 @@
 import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
-export default function LogOutButton() {
+export default function LogOutButton({ className = '' }) {
 	const router = useRouter()
 
 	const handleSignOut = async () => {
 		await signOut({ redirect: false })
-		router.replace('/') // 로그아웃 후 홈페이지로 리다이렉트
+		router.replace('/')
 	}
 
 	return (
-		<button onClick={handleSignOut} className="">
+		<button onClick={handleSignOut} className="className">
 			로그아웃
 		</button>
 	)

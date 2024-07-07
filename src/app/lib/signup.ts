@@ -1,31 +1,33 @@
 'use server'
 
 import bcrypt from 'bcrypt'
+import { v4 as uuidv4 } from 'uuid'
 import { redirect } from 'next/navigation'
-import { checkEmailExists, createUser } from '@/db'
+import { createUser, checkEmailExists, checkUsernameExists } from '@/db'
 
 export async function signUp(prevState: any, formData: FormData) {
+	const id = uuidv4() as string
 	const email = formData.get('email') as string
 	const password = formData.get('password') as string
 	const confirmPassword = formData.get('confirmPassword') as string
-	const username = formData.get('username') as string
-
-	// html 입력 유효성 검사로 필요없음
-	// if (!email || !password || !confirmPassword || !username) {
-	// 	return { message: '모든 필드를 입력해주세요.' }
-	// }
+	const name = formData.get('name') as string
 
 	if (await checkEmailExists(email)) {
 		return { message: '이미 가입된 이메일입니다.' }
 	}
 
+	if (await checkUsernameExists(name)) {
+		return { message: '이미 사용 중인 닉네임입니다.' }
+	}
+
 	const hashedPassword = await bcrypt.hash(password, 10)
 
 	try {
-		await createUser(email, hashedPassword, username)
-		redirect('/login')
+		await createUser(id, email, hashedPassword, name)
 	} catch (error) {
 		console.error('회원가입 에러:', error)
 		return { message: '회원가입을 실패했습니다. 다시 시도해주세요.' }
 	}
+
+	redirect('/login')
 }

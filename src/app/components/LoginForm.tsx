@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 
-export default function LoginForm() {
+export default function LogInForm() {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [message, setMessage] = useState('')
@@ -38,7 +38,7 @@ export default function LoginForm() {
 	return (
 		<main className="flex items-center justify-center md:h-screen">
 			<div className="relative mx-auto flex w-full max-w-[400px] flex-col p-4 md:-mt-40">
-				<div className="flex items-center h-6 p-6 bg-blue-600 text-white rounded-md ">
+				<div className="flex items-center h-6 p-6 text-white bg-blue-600 rounded-md ">
 					로그인
 				</div>
 				<form onSubmit={handleSubmit} className="space-y-3">
@@ -85,11 +85,11 @@ export default function LoginForm() {
 						</div>
 						<button
 							type="submit"
-							className="w-full mt-8 bg-blue-300 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+							className="w-full px-4 py-2 mt-8 font-bold text-white bg-blue-300 rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline"
 						>
 							로그인
 						</button>
-						{message && <p className="text-sm mt-2 text-red-500">{message}</p>}
+						{message && <p className="mt-2 text-sm text-red-500">{message}</p>}
 					</div>
 				</form>
 			</div>
