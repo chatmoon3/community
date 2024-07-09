@@ -1,36 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![스크린샷 2024-07-08 082938](https://github.com/chatmoon3/community/assets/131834945/184d6ac8-61a2-40bb-9229-53733dbb6500)
+ 게시판 화면
 
-## Getting Started
 
-First, run the development server:
+React와 Nextjs를 활용한 커뮤니티 게시판입니다.
+회원가입, 로그인, 로그아웃, 세션 관리, 게시글 작성/목록/보기, 댓글 작성/목록이 구현되어 있습니다.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+React 상태 관리와 폼 처리 구현
+Next.js 파일 기반 라우팅 및 서버/클라이언트 컴포넌트 분리
+TypeScript 사용으로 타입 안정성 확보
+Tailwind CSS 반응형 레이아웃 구현
+NextAuth 인증 관련 로직 개발
+Vercel-postgres 데이터베이스 구현 및 연동
