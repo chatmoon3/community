@@ -12,7 +12,7 @@ export default function LogOutButton({ className = '' }) {
 	}
 
 	return (
-		<button onClick={handleSignOut} className="className">
+		<button onClick={handleSignOut} className={className}>
 			로그아웃
 		</button>
 	)

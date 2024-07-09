@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import SignOutButton from '@/app/components/LogOutButton'
 import LogOutButton from '@/app/components/LogOutButton'
 
 export default function Navbar() {
@@ -36,12 +35,12 @@ export default function Navbar() {
 					{!session ? (
 						<>
 							<Link href="/login">
-								<button className="w-full px-3 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600">
+								<button className="w-20 px-3 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600">
 									로그인
 								</button>
 							</Link>
 							<Link href="/signup">
-								<button className="w-full px-3 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600">
+								<button className="w-20 px-3 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600">
 									회원가입
 								</button>
 							</Link>
@@ -49,11 +48,11 @@ export default function Navbar() {
 					) : (
 						<>
 							<Link href="/login">
-								<button className="w-full px-3 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600">
+								<button className="w-20 px-3 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600">
 									프로필
 								</button>
 							</Link>
-							<LogOutButton className="w-full px-3 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600" />
+							<LogOutButton className="w-20 px-3 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600" />
 						</>
 					)}
 				</div>
@@ -107,11 +106,11 @@ export default function Navbar() {
 					) : (
 						<>
 							<Link href="/login">
-								<button className="w-full px-3 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600">
+								<button className="w-full px-3 py-1 mt-4 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600">
 									프로필
 								</button>
 							</Link>
-							<LogOutButton className="w-full px-3 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600" />
+							<LogOutButton className="w-full px-3 py-1 mt-2 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600" />
 						</>
 					)}
 				</div>

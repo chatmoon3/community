@@ -1,10 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { formatDistanceToNow } from 'date-fns'
-import { ko } from 'date-fns/locale'
 import { getCommentsByPostId } from '@/app/lib/post'
 import { Comment, CommentWithAuthor } from '@/types/models'
+import { customFormatDistanceToNow } from '@/utils/dateUtils'
 
 export default function CommentList({ postId }: { postId: string }) {
 	const [comments, setComments] = useState<CommentWithAuthor[]>([])
@@ -30,10 +29,7 @@ export default function CommentList({ postId }: { postId: string }) {
 							<div className="text-sm text-gray-500">
 								<span>By: {comment.authorName}</span>
 								<span className="ml-4">
-									{formatDistanceToNow(new Date(comment.created_at), {
-										addSuffix: true,
-										locale: ko,
-									})}
+									{customFormatDistanceToNow(new Date(comment.created_at))}
 								</span>
 							</div>
 						</li>

@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { formatDistanceToNow } from 'date-fns'
-import { ko } from 'date-fns/locale'
 import { PostWithAuthor } from '@/types/models'
 import { getPosts } from '@/app/lib/post'
+import { customFormatDistanceToNow } from '@/utils/dateUtils'
 
 interface PostsListProps {
 	initialPosts: PostWithAuthor[]
@@ -72,10 +71,7 @@ export default function PostList({
 									{post.authorName}
 								</td>
 								<td className="w-32 px-4 py-4 text-center">
-									{formatDistanceToNow(new Date(post.createdAt), {
-										addSuffix: true,
-										locale: ko,
-									})}
+									{customFormatDistanceToNow(new Date(post.createdAt))}
 								</td>
 							</tr>
 						))}
