@@ -1,13 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { createPost } from '@/app/lib/post'
+import { createPost, updatePost } from '@/app/lib/post'
 
-export default function PostForm() {
-	const [title, setTitle] = useState('')
-	const [content, setContent] = useState('')
+interface PostFormProps {
+	initialPost?: {
+		id: string
+		title: string
+		content: string
+	}
+}
+
+export default function PostForm({ initialPost }: PostFormProps) {
+	const [title, setTitle] = useState(initialPost?.title || '')
+	const [content, setContent] = useState(initialPost?.content || '')
 	const { data: session } = useSession()
 	const router = useRouter()
 
@@ -18,17 +26,29 @@ export default function PostForm() {
 			return
 		}
 		try {
-			await createPost(title, content)
-			router.push('/posts')
+			if (initialPost) {
+				await updatePost(initialPost.id, title, content)
+				router.push(`/posts/${initialPost.id}`)
+			} else {
+				const { id } = await createPost(title, content)
+				router.push(`/posts/${id}`)
+			}
 		} catch (error) {
-			console.error('게시글 작성 실패:', error)
+			console.error(
+				console.error(
+					initialPost ? '게시글 수정 실패:' : '게시글 작성 실패:',
+					error
+				)
+			)
 		}
 	}
 
 	return (
 		<div className="container max-w-3xl mx-auto my-8">
 			<div className="p-6 bg-white rounded-lg shadow-md">
-				<h1 className="mb-4 text-2xl font-bold">새 게시글 작성</h1>
+				<h1 className="mb-4 text-2xl font-bold">
+					{initialPost ? '게시글 수정' : '새 게시글 작성'}
+				</h1>
 				<form onSubmit={handleSubmit}>
 					<div className="mb-4">
 						<label htmlFor="title" className="block mb-2 font-medium">
@@ -59,7 +79,7 @@ export default function PostForm() {
 						type="submit"
 						className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
 					>
-						작성
+						{initialPost ? '수정' : '작성'}
 					</button>
 				</form>
 			</div>

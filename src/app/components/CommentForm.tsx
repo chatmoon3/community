@@ -1,14 +1,32 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { createComment } from '@/app/lib/post'
+import { createComment, updateComment } from '@/app/lib/post'
 
-export default function CommentForm({ postId }: { postId: string }) {
+interface CommentProps {
+	postId: string
+	commentId?: string
+	initialContent?: string
+	isEditing?: boolean
+	onCancel?: () => void
+}
+
+export default function CommentForm({
+	postId,
+	commentId,
+	initialContent = '',
+	isEditing = false,
+	onCancel,
+}: CommentProps) {
 	const [content, setContent] = useState('')
 	const router = useRouter()
 	const { data: session } = useSession()
+
+	useEffect(() => {
+		setContent(initialContent)
+	}, [initialContent])
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
@@ -17,11 +35,16 @@ export default function CommentForm({ postId }: { postId: string }) {
 			return
 		}
 		try {
-			await createComment(postId, content, session.user.id)
+			if (isEditing && commentId) {
+				await updateComment(commentId, content)
+			} else {
+				await createComment(postId, content)
+			}
 			setContent('')
+			if (onCancel) onCancel()
 			router.refresh()
 		} catch (error) {
-			console.error('댓글 작성 실패:', error)
+			console.error(isEditing ? '댓글 수정 실패:' : '댓글 작성 실패:', error)
 		}
 	}
 	return (
@@ -34,7 +57,7 @@ export default function CommentForm({ postId }: { postId: string }) {
 					htmlFor="comment"
 					className="block mb-2 text-sm font-medium text-gray-700"
 				>
-					댓글 작성
+					{isEditing ? '댓글 수정' : '댓글 작성'}
 				</label>
 				<textarea
 					id="comment"
@@ -47,11 +70,20 @@ export default function CommentForm({ postId }: { postId: string }) {
 				/>
 			</div>
 			<div className="flex justify-end">
+				{isEditing && (
+					<button
+						type="button"
+						onClick={onCancel}
+						className="px-4 py-2 mr-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+					>
+						취소하기
+					</button>
+				)}
 				<button
 					type="submit"
 					className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
 				>
-					댓글 작성
+					{isEditing ? '수정하기' : '작성하기'}
 				</button>
 			</div>
 		</form>
