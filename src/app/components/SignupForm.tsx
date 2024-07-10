@@ -51,15 +51,15 @@ export default function SignUpForm() {
 							<div>
 								<label
 									className="block mt-5 mb-3 font-medium text-gray-900 text-xm"
-									htmlFor="username"
+									htmlFor="name"
 								>
 									닉네임
 								</label>
 								<div className="relative">
 									<input
 										className={inputStyle}
-										id="username"
-										name="username"
+										id="name"
+										name="name"
 										type="text"
 										placeholder="홍길동"
 										required

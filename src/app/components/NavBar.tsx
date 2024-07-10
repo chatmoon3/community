@@ -35,12 +35,12 @@ export default function Navbar() {
 					{!session ? (
 						<>
 							<Link href="/login">
-								<button className="w-20 px-3 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600">
+								<button className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600">
 									로그인
 								</button>
 							</Link>
 							<Link href="/signup">
-								<button className="w-20 px-3 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600">
+								<button className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600">
 									회원가입
 								</button>
 							</Link>
@@ -48,11 +48,11 @@ export default function Navbar() {
 					) : (
 						<>
 							<Link href="/login">
-								<button className="w-20 px-3 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600">
+								<button className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600">
 									프로필
 								</button>
 							</Link>
-							<LogOutButton className="w-20 px-3 py-1 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600" />
+							<LogOutButton className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600" />
 						</>
 					)}
 				</div>

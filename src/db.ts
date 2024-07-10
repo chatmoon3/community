@@ -24,6 +24,7 @@ export async function createUser(
 		const result = await sql`
       INSERT INTO users (id, email, password, name)
       VALUES (${id}, ${email}, ${hashedPassword}, ${name})
+			RETURNING id
     `
 		return result.rows[0].id
 	} catch (error) {

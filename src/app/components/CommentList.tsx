@@ -33,7 +33,6 @@ export default function CommentList({ postId }: { postId: string }) {
 
 	return (
 		<div className="mt-8">
-			<h2 className="mb-4 text-2xl font-bold">Comments</h2>
 			{comments.length === 0 ? (
 				<p></p>
 			) : (

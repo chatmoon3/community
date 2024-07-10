@@ -1,13 +1,12 @@
 'use client'
 
-import { formatDistanceToNow } from 'date-fns'
-import { ko } from 'date-fns/locale'
 import Link from 'next/link'
 import CommentList from './CommentList'
 import CommentForm from './CommentForm'
-import { deletePost } from '@/app/lib/post'
-import { PostWithAuthor } from '@/types/models'
 import { useRouter } from 'next/navigation'
+import { PostWithAuthor } from '@/types/models'
+import { deletePost } from '@/app/lib/post'
+import { customFormatDistanceToNow } from '@/utils/dateUtils'
 
 interface PostViewProps {
 	post: PostWithAuthor
@@ -33,12 +32,7 @@ export default function PostView({ post }: PostViewProps) {
 				<h1 className="mb-4 text-2xl font-bold">{post.title}</h1>
 				<div className="flex items-center mb-4 text-gray-500">
 					<span className="mr-4">{post.authorName}</span>
-					<span>
-						{formatDistanceToNow(new Date(post.createdAt), {
-							addSuffix: true,
-							locale: ko,
-						})}
-					</span>
+					<span>{customFormatDistanceToNow(new Date(post.createdAt))}</span>
 				</div>
 				<p>{post.content}</p>
 				<div className="mt-4">

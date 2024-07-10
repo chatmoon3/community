@@ -1,10 +1,14 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Noto_Sans } from 'next/font/google'
 import '@/app/globals.css'
 import Navbar from '@/app/components/NavBar'
 import AuthSession from '@/app/components/AuthSession'
 
-const inter = Inter({ subsets: ['latin'] })
+const notoSans = Noto_Sans({
+	weight: ['400', '700'],
+	subsets: ['latin'],
+	display: 'swap',
+})
 
 export const metadata: Metadata = {
 	title: 'Welcome Community!',
@@ -18,7 +22,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="ko">
-			<body className={inter.className}>
+			<body className={notoSans.className}>
 				<AuthSession>
 					<Navbar />
 					<main className="container mx-auto mt-4 px-4">{children}</main>
