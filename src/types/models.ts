@@ -26,6 +26,7 @@ export interface Comment {
 
 export interface PostWithAuthor extends Post {
 	authorName: string
+	commentCount: number
 }
 
 export interface CommentWithAuthor extends Comment {

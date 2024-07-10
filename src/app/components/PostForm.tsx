@@ -19,6 +19,13 @@ export default function PostForm({ initialPost }: PostFormProps) {
 	const { data: session } = useSession()
 	const router = useRouter()
 
+	useEffect(() => {
+		if (initialPost) {
+			setTitle(initialPost.title)
+			setContent(initialPost.content)
+		}
+	}, [initialPost])
+
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		if (!session) {
@@ -35,11 +42,10 @@ export default function PostForm({ initialPost }: PostFormProps) {
 			}
 		} catch (error) {
 			console.error(
-				console.error(
-					initialPost ? '게시글 수정 실패:' : '게시글 작성 실패:',
-					error
-				)
+				initialPost ? '게시글 수정 실패:' : '게시글 작성 실패:',
+				error
 			)
+			return
 		}
 	}
 

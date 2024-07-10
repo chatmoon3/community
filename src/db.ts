@@ -105,10 +105,13 @@ export async function getPostById(id: string): Promise<PostWithAuthor | null> {
       posts.author_id,
       posts.created_at,
       posts.updated_at,
-      users.name AS author_name
+      users.name AS author_name,
+			COUNT(comments.id) AS comment_count
 		FROM posts
 		JOIN users ON posts.author_id = users.id
+		LEFT JOIN comments ON comments.post_id = posts.id
 		WHERE posts.id = ${id}
+		GROUP BY posts.id, users.name
 	`
 
 	if (result.rows.length === 0) {
@@ -123,6 +126,7 @@ export async function getPostById(id: string): Promise<PostWithAuthor | null> {
 		createdAt: result.rows[0].created_at,
 		updatedAt: result.rows[0].updated_at,
 		authorName: result.rows[0].author_name,
+		commentCount: result.rows[0].comment_count,
 	} as PostWithAuthor
 }
 

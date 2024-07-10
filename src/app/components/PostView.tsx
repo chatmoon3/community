@@ -1,11 +1,13 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 import CommentList from './CommentList'
 import CommentForm from './CommentForm'
 import { useRouter } from 'next/navigation'
 import { PostWithAuthor } from '@/types/models'
-import { deletePost } from '@/app/lib/post'
+import { getPostById, deletePost } from '@/app/lib/post'
 import { customFormatDistanceToNow } from '@/utils/dateUtils'
 
 interface PostViewProps {
@@ -13,9 +15,21 @@ interface PostViewProps {
 }
 
 export default function PostView({ post }: PostViewProps) {
+	const [currentPost, setCurrentPost] = useState<PostWithAuthor>(post)
 	const router = useRouter()
+	const { data: session } = useSession()
 
-	const handleDelete = async (postId: string) => {
+	useEffect(() => {
+		async function fetchPost() {
+			const updatedPost = await getPostById(post.id)
+			if (updatedPost) {
+				setCurrentPost(updatedPost)
+			}
+		}
+		fetchPost()
+	}, [post.id])
+
+	const handleDeletePost = async (postId: string) => {
 		if (window.confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
 			try {
 				await deletePost(postId)
@@ -27,28 +41,48 @@ export default function PostView({ post }: PostViewProps) {
 	}
 
 	return (
-		<div className="container max-w-3xl mx-auto my-8">
-			<div className="p-6 bg-white rounded-lg shadow-md">
-				<h1 className="mb-4 text-2xl font-bold">{post.title}</h1>
-				<div className="flex items-center mb-4 text-gray-500">
-					<span className="mr-4">{post.authorName}</span>
-					<span>{customFormatDistanceToNow(new Date(post.createdAt))}</span>
-				</div>
-				<p>{post.content}</p>
-				<div className="mt-4">
-					<Link href={`/posts/${post.id}/edit`} className="mr-4 text-blue-500">
-						수정
-					</Link>
-					<button
-						onClick={() => handleDelete(post.id)}
-						className="mr-4 text-blue-500"
-					>
-						삭제
-					</button>
+		<div className="max-w-4xl mx-auto p-10 mt-12 bg-white border border-gray-200 rounded-lg overflow-hidden">
+			<div className="border-b">
+				<h1 className="text-3xl font-bold mb-2">{currentPost.title}</h1>
+				<div className="flex justify-between items-center mb-2">
+					<div className="flex items-center space-x-2 text-sm text-gray-500 mb-4">
+						<span>{currentPost.authorName}</span>
+						<span>•</span>
+						<span>
+							{customFormatDistanceToNow(new Date(currentPost.createdAt))}
+						</span>
+					</div>
+					{session?.user?.id === currentPost.authorId && (
+						<div>
+							<Link
+								href={`/posts/${currentPost.id}/edit`}
+								className="mr-2 text-gray-500 text-sm"
+							>
+								수정
+							</Link>
+							<button
+								onClick={() => handleDeletePost(currentPost.id)}
+								className="text-gray-500 text-sm"
+							>
+								삭제
+							</button>
+						</div>
+					)}
 				</div>
 			</div>
-			<CommentList postId={post.id} />
-			<CommentForm postId={post.id} />
+
+			<p className="text-gray-700 my-16">{currentPost.content}</p>
+
+			<div className="flex items-center mb-4 space-x-4">
+				<span className="flex text-sm mt-2 space-x-1 text-gray-500">
+					댓글 {currentPost.commentCount}
+				</span>
+			</div>
+
+			<div className="pt-4 border-t-4">
+				<CommentList postId={currentPost.id} />
+				<CommentForm postId={currentPost.id} />
+			</div>
 		</div>
 	)
 }

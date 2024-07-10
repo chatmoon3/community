@@ -30,6 +30,22 @@ export default function PostList({
 		fetchPosts()
 	}, [page])
 
+	const getPageNumbers = () => {
+		const pageNumbers = []
+		let startPage = Math.max(1, page - 2)
+		let endPage = Math.min(totalPages, startPage + 4)
+
+		if (endPage - startPage < 4) {
+			startPage = Math.max(1, endPage - 4)
+		}
+
+		for (let i = startPage; i <= endPage; i++) {
+			pageNumbers.push(i)
+		}
+
+		return pageNumbers
+	}
+
 	return (
 		<div className="container max-w-5xl mx-auto px-4 sm:px-8">
 			<div className="py-8">
@@ -129,25 +145,35 @@ export default function PostList({
 							<div className="inline-flex mt-2 xs:mt-0">
 								<button
 									onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-									className="px-4 py-2 text-sm bg-blue-500 hover:bg-blue-700 text-white font-semibold shadow-sm rounded-l-full"
+									className="px-4 py-2 text-sm font-semibold text-gray-800"
 									disabled={page === 1}
 								>
 									이전
 								</button>
-								<div className="w-2"></div>
+								{getPageNumbers().map((pageNumber) => (
+									<button
+										key={pageNumber}
+										onClick={() => setPage(pageNumber)}
+										className={`px-4 py-2 text-sm font-semibold text-gray-800 relative group`}
+									>
+										{pageNumber}
+										<span
+											className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 h-0.5 bg-blue-500 transition-all duration-300 ${
+												page === pageNumber ? 'w-4' : 'w-0 group-hover:w-4'
+											}`}
+										></span>
+									</button>
+								))}
 								<button
 									onClick={() =>
 										setPage((prev) => Math.min(prev + 1, totalPages))
 									}
-									className="px-4 py-2 text-sm bg-blue-500 hover:bg-blue-700 text-white font-semibold shadow-sm rounded-r-full"
+									className="px-4 py-2 text-sm font-semibold text-gray-800"
 									disabled={page === totalPages}
 								>
 									다음
 								</button>
 							</div>
-							<span className="text-xs xs:text-sm mt-5 text-gray-900">
-								{page} / {totalPages} 페이지
-							</span>
 						</div>
 					</div>
 				</div>

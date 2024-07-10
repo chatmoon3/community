@@ -38,7 +38,7 @@ export default function CommentList({ postId }: { postId: string }) {
 			) : (
 				<ul className="space-y-4">
 					{comments.map((comment) => (
-						<li key={comment.id} className="p-4 bg-gray-100 rounded-lg">
+						<li key={comment.id} className="p-4">
 							{editingCommentId === comment.id ? (
 								<CommentForm
 									postId={postId}
@@ -48,31 +48,34 @@ export default function CommentList({ postId }: { postId: string }) {
 									onCancel={() => setEditingCommentId(null)}
 								/>
 							) : (
-								<>
-									<p className="mb-2">{comment.content}</p>
-									<div className="text-sm text-bla">
-										<span>By: {comment.authorName}</span>
-										<span className="ml-4">
-											{customFormatDistanceToNow(new Date(comment.createdAt))}
-										</span>
+								<div className="border-b py-2">
+									<div className="flex justify-between items-center mb-2">
+										<div className="flex items-center space-x-2 text-sm text-gray-500">
+											<span>{comment.authorName}</span>
+											<span>•</span>
+											<span>
+												{customFormatDistanceToNow(new Date(comment.createdAt))}
+											</span>
+										</div>
 										{session?.user?.id === comment.authorId && (
-											<div className="mt-2">
+											<div>
 												<button
 													onClick={() => setEditingCommentId(comment.id)}
-													className="mr-3 text-gray-500"
+													className="text-sm text-gray-500 mr-2"
 												>
 													수정
 												</button>
 												<button
 													onClick={() => handleDelete(comment.id)}
-													className="text-gray-500"
+													className="text-sm text-gray-500 hover:text-black"
 												>
 													삭제
 												</button>
 											</div>
 										)}
 									</div>
-								</>
+									<p className="text-gray-700">{comment.content}</p>
+								</div>
 							)}
 						</li>
 					))}
