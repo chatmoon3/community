@@ -1,11 +1,17 @@
 게시판 화면
+
 ![스크린샷 2024-07-11 041947](https://github.com/chatmoon3/community/assets/131834945/81b18b54-ad68-4033-90bc-2a4312e5137e)
+
 게시판 모바일 화면
+
 ![스크린샷 2024-07-11 041954](https://github.com/chatmoon3/community/assets/131834945/52a5c022-56de-47ef-83b4-dfdd05085d31)
 
 게시글 화면
+
 ![스크린샷 2024-07-11 041920](https://github.com/chatmoon3/community/assets/131834945/c896b765-99bc-4e03-b7a9-ec7acace0983)
+
 게시글 모바일 화면
+
 ![스크린샷 2024-07-11 041924](https://github.com/chatmoon3/community/assets/131834945/cc164910-b2db-4dd2-9ab0-4629d41cbb81)
 
 
