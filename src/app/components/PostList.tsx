@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 import { PostWithAuthor } from '@/types/models'
 import { getPosts } from '@/app/lib/post'
 import { customFormatDistanceToNow } from '@/utils/dateUtils'
@@ -16,6 +17,7 @@ export default function PostList({
 	initialTotal,
 }: PostsListProps) {
 	const [page, setPage] = useState<number>(1)
+	const { data: session } = useSession()
 	const limit = 10
 
 	const { data } = useQuery({
@@ -60,12 +62,16 @@ export default function PostList({
 			<div className="py-8">
 				<div className="flex justify-between items-center mb-6">
 					<h2 className="text-2xl font-semibold leading-tight">게시판</h2>
-					<Link
-						href="/posts/create"
-						className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600"
-					>
-						글쓰기
-					</Link>
+					{!session ? (
+						<></>
+					) : (
+						<Link
+							href="/posts/create"
+							className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600"
+						>
+							글쓰기
+						</Link>
+					)}
 				</div>
 				<div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
 					<div className="inline-block min-w-full rounded-lg overflow-hidden">

@@ -22,9 +22,9 @@ export default function SignUpForm() {
 		'block w-full rounded-md border border-gary-200 py-3 pl-5 text-sm outline-2 placeholder:text-gray-500'
 
 	return (
-		<main className="flex items-center justify-center md:h-screen">
-			<div className="relative mx-auto flex w-full max-w-[400px] flex-col p-4 md:-mt-40">
-				<div className="flex items-center h-6 p-6 bg-blue-600 text-white rounded-md ">
+		<main className="flex items-center justify-center min-h-[calc(100vh-90px)]">
+			<div className="w-full max-w-[400px] flex-col">
+				<div className="flex items-center h-6 p-6 text-white bg-blue-600 rounded-md ">
 					회원가입
 				</div>
 				<form action={formAction} className="space-y-3">

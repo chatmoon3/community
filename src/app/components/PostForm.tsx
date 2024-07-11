@@ -74,47 +74,49 @@ export default function PostForm({ initialPost }: PostFormProps) {
 	}
 
 	return (
-		<div className="container max-w-3xl mx-auto my-8">
-			<div className="p-6 bg-white rounded-lg shadow-md">
-				<h1 className="mb-4 text-2xl font-bold">
-					{initialPost ? '게시글 수정' : '새 게시글 작성'}
-				</h1>
-				<form onSubmit={handleSubmit}>
-					<div className="mb-4">
-						<label htmlFor="title" className="block mb-2 font-medium">
-							제목
-						</label>
-						<input
-							type="text"
-							id="title"
-							value={title}
-							onChange={(e) => setTitle(e.target.value)}
-							className="w-full px-3 py-2 border rounded-md"
-							required
-						/>
-					</div>
-					<div className="mb-4">
-						<label htmlFor="content" className="block mb-2 font-medium">
-							내용
-						</label>
-						<textarea
-							id="content"
-							value={content}
-							onChange={(e) => setContent(e.target.value)}
-							className="w-full h-32 px-3 py-2 border rounded-md"
-							required
-						></textarea>
-					</div>
-					<div className="flex justify-end">
-						<button
-							type="submit"
-							className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600"
-						>
-							{initialPost ? '수정' : '작성'}
-						</button>
-					</div>
-				</form>
+		<main className="flex items-center justify-center min-h-[calc(100vh-90px)] transform -translate-y-8">
+			<div className="container max-w-3xl mx-auto">
+				<div className="p-6 bg-white rounded-lg shadow-md">
+					<h1 className="mb-4 text-2xl font-bold">
+						{initialPost ? '게시글 수정' : '새 게시글 작성'}
+					</h1>
+					<form onSubmit={handleSubmit}>
+						<div className="mb-4">
+							<label htmlFor="title" className="block mb-2 font-medium">
+								제목
+							</label>
+							<input
+								type="text"
+								id="title"
+								value={title}
+								onChange={(e) => setTitle(e.target.value)}
+								className="w-full px-3 py-2 border rounded-md"
+								required
+							/>
+						</div>
+						<div className="mb-4">
+							<label htmlFor="content" className="block mb-2 font-medium">
+								내용
+							</label>
+							<textarea
+								id="content"
+								value={content}
+								onChange={(e) => setContent(e.target.value)}
+								className="w-full h-32 px-3 py-2 border rounded-md"
+								required
+							></textarea>
+						</div>
+						<div className="flex justify-end">
+							<button
+								type="submit"
+								className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600"
+							>
+								{initialPost ? '수정' : '작성'}
+							</button>
+						</div>
+					</form>
+				</div>
 			</div>
-		</div>
+		</main>
 	)
 }
