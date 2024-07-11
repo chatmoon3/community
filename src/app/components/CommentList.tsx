@@ -42,56 +42,56 @@ export default function CommentList({ postId }: { postId: string }) {
 		}
 	}
 
+	if (!comments) {
+		return
+	}
+
 	return (
 		<div className="mt-8">
-			{comments.length === 0 ? (
-				<p>아직 댓글이 없습니다.</p>
-			) : (
-				<ul className="space-y-4">
-					{comments.map((comment) => (
-						<li key={comment.id} className="p-4">
-							{editingCommentId === comment.id ? (
-								<CommentForm
-									postId={postId}
-									commentId={comment.id}
-									initialContent={comment.content}
-									isEditing={true}
-									onCancel={() => setEditingCommentId(null)}
-								/>
-							) : (
-								<div className="border-b py-2">
-									<div className="flex justify-between items-center mb-2">
-										<div className="flex items-center space-x-2 text-sm text-gray-500">
-											<span>{comment.authorName}</span>
-											<span>•</span>
-											<span>
-												{customFormatDistanceToNow(new Date(comment.createdAt))}
-											</span>
-										</div>
-										{session?.user?.id === comment.authorId && (
-											<div>
-												<button
-													onClick={() => setEditingCommentId(comment.id)}
-													className="text-sm text-gray-500 mr-2"
-												>
-													수정
-												</button>
-												<button
-													onClick={() => handleDeleteComment(comment.id)}
-													className="text-sm text-gray-500 hover:text-black"
-												>
-													삭제
-												</button>
-											</div>
-										)}
+			<ul className="space-y-4">
+				{comments.map((comment) => (
+					<li key={comment.id} className="p-4">
+						{editingCommentId === comment.id ? (
+							<CommentForm
+								postId={postId}
+								commentId={comment.id}
+								initialContent={comment.content}
+								isEditing={true}
+								onCancel={() => setEditingCommentId(null)}
+							/>
+						) : (
+							<div className="border-b py-2">
+								<div className="flex justify-between items-center mb-2">
+									<div className="flex items-center space-x-2 text-sm text-gray-500">
+										<span>{comment.authorName}</span>
+										<span>•</span>
+										<span>
+											{customFormatDistanceToNow(new Date(comment.createdAt))}
+										</span>
 									</div>
-									<p className="text-gray-700">{comment.content}</p>
+									{session?.user?.id === comment.authorId && (
+										<div>
+											<button
+												onClick={() => setEditingCommentId(comment.id)}
+												className="text-sm text-gray-500 mr-2"
+											>
+												수정
+											</button>
+											<button
+												onClick={() => handleDeleteComment(comment.id)}
+												className="text-sm text-gray-500 hover:text-black"
+											>
+												삭제
+											</button>
+										</div>
+									)}
 								</div>
-							)}
-						</li>
-					))}
-				</ul>
-			)}
+								<p className="text-gray-700">{comment.content}</p>
+							</div>
+						)}
+					</li>
+				))}
+			</ul>
 		</div>
 	)
 }

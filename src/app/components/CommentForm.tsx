@@ -103,7 +103,7 @@ export default function CommentForm({
 					<button
 						type="button"
 						onClick={onCancel}
-						className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600 disabled:bg-blue-300"
+						className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600 disabled:bg-blue-300 mr-2"
 					>
 						취소하기
 					</button>

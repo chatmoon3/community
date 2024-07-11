@@ -3,6 +3,7 @@
 import {
 	createPost as dbCreatePost,
 	getPosts as dbGetPosts,
+	getPopularPosts as dbPopularPosts,
 	getPostById as dbGetPostById,
 	updatePost as dbUpdatePost,
 	deletePost as dbDeletePost,
@@ -10,6 +11,7 @@ import {
 	getCommentsByPostId as dbGetCommentsByPostId,
 	updateComment as dbUpdateComment,
 	deleteComment as dbDeleteComment,
+	increaseViewCount as dbIncreaseViewCount,
 	getCommentById,
 } from '@/db'
 import { getServerSession } from 'next-auth/next'
@@ -47,12 +49,30 @@ export async function getPosts(page: number, limit: number) {
 	}
 }
 
+export async function getPopularPosts(limit: number) {
+	try {
+		return await dbPopularPosts(limit)
+	} catch (error) {
+		console.error('getPopularPosts error:', error)
+		throw new Error('인기글 목록을 가져오는 중 오류가 발생했습니다.')
+	}
+}
+
 export async function getPostById(id: string) {
 	try {
+		await increaseViewCount(id)
 		return await dbGetPostById(id)
 	} catch (error) {
 		console.error('getPostById error:', error)
 		throw new Error('게시글을 가져오는 중 오류가 발생했습니다.')
+	}
+}
+
+async function increaseViewCount(postId: string) {
+	try {
+		await dbIncreaseViewCount(postId)
+	} catch (error) {
+		console.error('increaseViewCount error:', error)
 	}
 }
 

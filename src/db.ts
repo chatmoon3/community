@@ -72,6 +72,7 @@ export async function getPosts(
       posts.author_id,
       posts.created_at,
       posts.updated_at,
+      posts.view_count,
       users.name AS author_name
 		FROM posts
 		JOIN users ON posts.author_id = users.id
@@ -89,10 +90,46 @@ export async function getPosts(
 			authorId: row.author_id,
 			createdAt: row.created_at,
 			updatedAt: row.updated_at,
+			viewCount: row.view_count,
 			authorName: row.author_name,
 		})) as PostWithAuthor[],
 		total: parseInt(totalResult.rows[0].count),
 	}
+}
+
+export async function getPopularPosts(
+	limit: number
+): Promise<PostWithAuthor[]> {
+	const result = await sql`
+    SELECT
+      posts.id AS post_id,
+      posts.title,
+      posts.content,
+      posts.author_id,
+      posts.created_at,
+      posts.updated_at,
+      posts.view_count,
+      users.name AS author_name,
+      COUNT(comments.id) AS comment_count
+    FROM posts
+    JOIN users ON posts.author_id = users.id
+    LEFT JOIN comments ON comments.post_id = posts.id
+    GROUP BY posts.id, users.name
+    ORDER BY posts.view_count DESC
+    LIMIT ${limit}
+  `
+
+	return result.rows.map((row) => ({
+		id: row.post_id,
+		title: row.title,
+		content: row.content,
+		authorId: row.author_id,
+		createdAt: row.created_at,
+		updatedAt: row.updated_at,
+		viewCount: row.view_count,
+		authorName: row.author_name,
+		commentCount: parseInt(row.comment_count),
+	})) as PostWithAuthor[]
 }
 
 export async function getPostById(id: string): Promise<PostWithAuthor | null> {
@@ -105,6 +142,7 @@ export async function getPostById(id: string): Promise<PostWithAuthor | null> {
       posts.author_id,
       posts.created_at,
       posts.updated_at,
+      posts.view_count,
       users.name AS author_name,
 			COUNT(comments.id) AS comment_count
 		FROM posts
@@ -125,9 +163,18 @@ export async function getPostById(id: string): Promise<PostWithAuthor | null> {
 		authorId: result.rows[0].author_id,
 		createdAt: result.rows[0].created_at,
 		updatedAt: result.rows[0].updated_at,
+		viewCount: result.rows[0].view_count,
 		authorName: result.rows[0].author_name,
 		commentCount: result.rows[0].comment_count,
 	} as PostWithAuthor
+}
+
+export async function increaseViewCount(postId: string): Promise<void> {
+	await sql`
+    UPDATE posts
+    SET view_count = view_count + 1
+    WHERE id = ${postId}
+  `
 }
 
 export async function updatePost(

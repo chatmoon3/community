@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import CommentList from './CommentList'
 import CommentForm from './CommentForm'
-import { Post, PostWithAuthor } from '@/types/models'
+import { PostWithAuthor } from '@/types/models'
 import { getPostById, deletePost } from '@/app/lib/post'
 import { customFormatDistanceToNow } from '@/utils/dateUtils'
 
@@ -27,6 +27,11 @@ export default function PostView({ post: initialPost }: PostViewProps) {
 			return result
 		},
 		initialData: initialPost,
+		placeholderData: {
+			...initialPost,
+			viewCount: 0,
+			commentCount: 0,
+		},
 	})
 
 	const deletePostMutation = useMutation({
@@ -76,11 +81,12 @@ export default function PostView({ post: initialPost }: PostViewProps) {
 			</div>
 
 			<p className="text-gray-700 my-16">{post.content}</p>
-
-			<div className="flex items-center mb-4 space-x-4">
-				<span className="flex text-sm mt-2 space-x-1 text-gray-500">
-					댓글 {post.commentCount} 개
-				</span>
+			<div className="flex items-center mb-2">
+				<div className="flex items-center space-x-2 text-sm text-gray-500 mb-2">
+					<span>조회 수 {post.viewCount}</span>
+					<span>•</span>
+					<span>댓글 수 {post.commentCount}</span>
+				</div>
 			</div>
 
 			<div className="pt-4 border-t-4">

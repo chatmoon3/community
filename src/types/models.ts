@@ -13,6 +13,8 @@ export interface Post {
 	authorId: string
 	createdAt: Date
 	updatedAt: Date
+	viewCount: number
+	commentCount: number
 }
 
 export interface Comment {
@@ -26,7 +28,6 @@ export interface Comment {
 
 export interface PostWithAuthor extends Post {
 	authorName: string
-	commentCount: number
 }
 
 export interface CommentWithAuthor extends Comment {

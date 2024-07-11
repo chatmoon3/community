@@ -105,15 +105,14 @@ export default function PostForm({ initialPost }: PostFormProps) {
 							required
 						></textarea>
 					</div>
-					<button
-						type="submit"
-						disabled={
-							createPostMutation.isPending || updatePostMutation.isPending
-						}
-						className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 disabled:bg-blue-300"
-					>
-						{initialPost ? '수정' : '작성'}
-					</button>
+					<div className="flex justify-end">
+						<button
+							type="submit"
+							className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600"
+						>
+							{initialPost ? '수정' : '작성'}
+						</button>
+					</div>
 				</form>
 			</div>
 		</div>
