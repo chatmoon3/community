@@ -3,6 +3,7 @@ import { Noto_Sans } from 'next/font/google'
 import '@/app/globals.css'
 import Navbar from '@/app/components/NavBar'
 import AuthSession from '@/app/components/AuthSession'
+import QueryProvider from '@/app/components/QueryProvider'
 
 const notoSans = Noto_Sans({
 	weight: ['400', '700'],
@@ -24,8 +25,10 @@ export default function RootLayout({
 		<html lang="ko">
 			<body className={notoSans.className}>
 				<AuthSession>
-					<Navbar />
-					<main className="container mx-auto mt-4 px-4">{children}</main>
+					<QueryProvider>
+						<Navbar />
+						<main className="container mx-auto mt-4 px-4">{children}</main>
+					</QueryProvider>
 				</AuthSession>
 			</body>
 		</html>

@@ -1,6 +1,7 @@
 'use client'
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { PostWithAuthor } from '@/types/models'
 import { getPosts } from '@/app/lib/post'
 import { customFormatDistanceToNow } from '@/utils/dateUtils'
@@ -14,21 +15,18 @@ export default function PostList({
 	initialPosts,
 	initialTotal,
 }: PostsListProps) {
-	const [posts, setPosts] = useState<PostWithAuthor[]>(initialPosts)
-	const [totalPosts, setTotalPosts] = useState<number>(initialTotal)
 	const [page, setPage] = useState<number>(1)
 	const limit = 10
 
-	const totalPages = Math.ceil(totalPosts / limit)
+	const { data } = useQuery({
+		queryKey: ['posts', page],
+		queryFn: () => getPosts(page, limit),
+		initialData: { posts: initialPosts, total: initialTotal },
+	})
 
-	useEffect(() => {
-		async function fetchPosts() {
-			const { posts, total } = await getPosts(page, limit)
-			setPosts(posts)
-			setTotalPosts(total)
-		}
-		fetchPosts()
-	}, [page])
+	const posts = data?.posts || []
+	const totalPosts = data?.total || 0
+	const totalPages = Math.ceil(totalPosts / limit)
 
 	const getPageNumbers = () => {
 		const pageNumbers = []

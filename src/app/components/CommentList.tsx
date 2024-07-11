@@ -1,44 +1,51 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getCommentsByPostId, deleteComment } from '@/app/lib/post'
 import { CommentWithAuthor } from '@/types/models'
 import { customFormatDistanceToNow } from '@/utils/dateUtils'
 import CommentForm from '@/app/components/CommentForm'
 
 export default function CommentList({ postId }: { postId: string }) {
-	const [comments, setComments] = useState<CommentWithAuthor[]>([])
 	const [editingCommentId, setEditingCommentId] = useState<string | null>(null)
+	const router = useRouter()
 	const { data: session } = useSession()
+	const queryClient = useQueryClient()
 
-	useEffect(() => {
-		async function fetchComments() {
-			const comments = await getCommentsByPostId(postId)
-			const sortedComments = comments.sort(
+	const { data: comments = [] } = useQuery<CommentWithAuthor[]>({
+		queryKey: ['comments', postId],
+		queryFn: () => getCommentsByPostId(postId),
+		select: (data) =>
+			data.sort(
 				(a, b) =>
 					new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-			)
-			setComments(sortedComments)
-		}
-		fetchComments()
-	}, [postId])
+			),
+	})
+
+	const deleteMutation = useMutation({
+		mutationFn: deleteComment,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['comments', postId] })
+			router.refresh()
+		},
+		onError: (error) => {
+			console.error('댓글 삭제 실패:', error)
+		},
+	})
 
 	const handleDeleteComment = async (commentId: string) => {
-		if (window.confirm('정말로 이 댓글을 삭제하기겠습니까?')) {
-			try {
-				await deleteComment(commentId)
-				setComments(comments.filter((c) => c.id !== commentId))
-			} catch (error) {
-				console.error('댓글 삭제 실패:', error)
-			}
+		if (window.confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
+			deleteMutation.mutate(commentId)
 		}
 	}
 
 	return (
 		<div className="mt-8">
 			{comments.length === 0 ? (
-				<p></p>
+				<p>아직 댓글이 없습니다.</p>
 			) : (
 				<ul className="space-y-4">
 					{comments.map((comment) => (

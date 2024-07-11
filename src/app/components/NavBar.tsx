@@ -47,7 +47,7 @@ export default function Navbar() {
 						</>
 					) : (
 						<>
-							<Link href="/login">
+							<Link href="/">
 								<button className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600">
 									프로필
 								</button>

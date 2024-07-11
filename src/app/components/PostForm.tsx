@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createPost, updatePost } from '@/app/lib/post'
 
 interface PostFormProps {
@@ -18,6 +19,7 @@ export default function PostForm({ initialPost }: PostFormProps) {
 	const [content, setContent] = useState(initialPost?.content || '')
 	const { data: session } = useSession()
 	const router = useRouter()
+	const queryClient = useQueryClient()
 
 	useEffect(() => {
 		if (initialPost) {
@@ -26,26 +28,48 @@ export default function PostForm({ initialPost }: PostFormProps) {
 		}
 	}, [initialPost])
 
+	const createPostMutation = useMutation({
+		mutationFn: ({ title, content }: { title: string; content: string }) =>
+			createPost(title, content),
+		onSuccess: (data) => {
+			queryClient.invalidateQueries({ queryKey: ['posts'] })
+			router.push(`/posts/${data.id}`)
+		},
+		onError: (error) => {
+			console.error('게시글 작성 실패:', error)
+		},
+	})
+
+	const updatePostMutation = useMutation({
+		mutationFn: ({
+			id,
+			title,
+			content,
+		}: {
+			id: string
+			title: string
+			content: string
+		}) => updatePost(id, title, content),
+		onSuccess: (_, variables) => {
+			queryClient.invalidateQueries({ queryKey: ['posts', variables.id] })
+			router.push(`/posts/${variables.id}`)
+		},
+		onError: (error) => {
+			console.error('게시글 수정 실패:', error)
+		},
+	})
+
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		if (!session) {
 			alert('로그인 후에 이용해주세요.')
 			return
 		}
-		try {
-			if (initialPost) {
-				await updatePost(initialPost.id, title, content)
-				router.push(`/posts/${initialPost.id}`)
-			} else {
-				const { id } = await createPost(title, content)
-				router.push(`/posts/${id}`)
-			}
-		} catch (error) {
-			console.error(
-				initialPost ? '게시글 수정 실패:' : '게시글 작성 실패:',
-				error
-			)
-			return
+
+		if (initialPost) {
+			updatePostMutation.mutate({ id: initialPost.id, title, content })
+		} else {
+			createPostMutation.mutate({ title, content })
 		}
 	}
 
@@ -83,7 +107,10 @@ export default function PostForm({ initialPost }: PostFormProps) {
 					</div>
 					<button
 						type="submit"
-						className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+						disabled={
+							createPostMutation.isPending || updatePostMutation.isPending
+						}
+						className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 disabled:bg-blue-300"
 					>
 						{initialPost ? '수정' : '작성'}
 					</button>
