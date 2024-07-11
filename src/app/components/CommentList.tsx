@@ -15,12 +15,16 @@ export default function CommentList({ postId }: { postId: string }) {
 	useEffect(() => {
 		async function fetchComments() {
 			const comments = await getCommentsByPostId(postId)
-			setComments(comments)
+			const sortedComments = comments.sort(
+				(a, b) =>
+					new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+			)
+			setComments(sortedComments)
 		}
 		fetchComments()
 	}, [postId])
 
-	const handleDelete = async (commentId: string) => {
+	const handleDeleteComment = async (commentId: string) => {
 		if (window.confirm('정말로 이 댓글을 삭제하기겠습니까?')) {
 			try {
 				await deleteComment(commentId)
@@ -66,7 +70,7 @@ export default function CommentList({ postId }: { postId: string }) {
 													수정
 												</button>
 												<button
-													onClick={() => handleDelete(comment.id)}
+													onClick={() => handleDeleteComment(comment.id)}
 													className="text-sm text-gray-500 hover:text-black"
 												>
 													삭제
