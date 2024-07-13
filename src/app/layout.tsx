@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Noto_Sans } from 'next/font/google'
 import '@/app/globals.css'
 import Navbar from '@/app/components/NavBar'
-import AuthSession from '@/app/components/AuthSession'
+import AuthProvider from '@/app/components/AuthProvider'
 import QueryProvider from '@/app/components/QueryProvider'
 
 const notoSans = Noto_Sans({
@@ -24,12 +24,12 @@ export default function RootLayout({
 	return (
 		<html lang="ko">
 			<body className={notoSans.className}>
-				<AuthSession>
+				<AuthProvider>
 					<QueryProvider>
 						<Navbar />
 						<main className="container mx-auto mt-4 px-4">{children}</main>
 					</QueryProvider>
-				</AuthSession>
+				</AuthProvider>
 			</body>
 		</html>
 	)
