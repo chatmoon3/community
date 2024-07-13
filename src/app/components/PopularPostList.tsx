@@ -1,18 +1,18 @@
 'use client'
 
 import Link from 'next/link'
-import { PostWithAuthor } from '@/types/models'
-import { customFormatDistanceToNow } from '@/utils/dateUtils'
 import { useQuery } from '@tanstack/react-query'
+import { PostWithAuthor } from '@/types/models'
 import { getPopularPosts } from '@/app/lib/post'
+import { customFormatDistanceToNow } from '@/utils/dateUtils'
 
-interface PopularPostsListProps {
+interface PopularPostListProps {
 	initialPosts: PostWithAuthor[]
 }
 
 export default function PopularPostList({
 	initialPosts,
-}: PopularPostsListProps) {
+}: PopularPostListProps) {
 	const { data: posts } = useQuery<PostWithAuthor[]>({
 		queryKey: ['popularPosts'],
 		queryFn: () => getPopularPosts(10),

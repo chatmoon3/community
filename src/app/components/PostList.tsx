@@ -20,15 +20,14 @@ export default function PostList({
 	const { data: session } = useSession()
 	const limit = 10
 
-	const { data } = useQuery({
+	const { data } = useQuery<{
+		posts: PostWithAuthor[]
+		total: number
+	}>({
 		queryKey: ['posts', page],
 		queryFn: () => getPosts(page, limit),
-		placeholderData: {
-			posts: initialPosts.map((post) => ({
-				...post,
-				viewCount: 0,
-				commentCount: 0,
-			})),
+		initialData: {
+			posts: initialPosts,
 			total: initialTotal,
 		},
 	})
@@ -37,8 +36,8 @@ export default function PostList({
 	const totalPosts = data?.total || 0
 	const totalPages = Math.ceil(totalPosts / limit)
 
-	const getPageNumbers = () => {
-		const pageNumbers = []
+	const getPageNumbers = (): number[] => {
+		const pageNumbers: number[] = []
 		let startPage = Math.max(1, page - 2)
 		let endPage = Math.min(totalPages, startPage + 4)
 

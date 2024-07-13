@@ -27,6 +27,7 @@ export default function PostView({ post: initialPost }: PostViewProps) {
 			return result
 		},
 		initialData: initialPost,
+		// 조회수와 댓글의 부정확한 정보를 불러오는 현상을 0으로 대체
 		placeholderData: {
 			...initialPost,
 			viewCount: 0,

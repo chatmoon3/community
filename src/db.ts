@@ -118,7 +118,6 @@ export async function getPopularPosts(
     ORDER BY posts.view_count DESC
     LIMIT ${limit}
   `
-
 	return result.rows.map((row) => ({
 		id: row.post_id,
 		title: row.title,
