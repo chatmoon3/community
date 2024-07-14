@@ -56,9 +56,9 @@ export default function Navbar() {
 						</>
 					) : (
 						<>
-							<Link href="/">
+							{/* <Link href="/">
 								<Button>프로필</Button>
-							</Link>
+							</Link> */}
 							<LogoutButton className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600" />
 						</>
 					)}
@@ -109,9 +109,9 @@ export default function Navbar() {
 						</>
 					) : (
 						<>
-							<Link href="/login">
+							{/* <Link href="/login">
 								<button className="btn-mobile-menu mt-4">프로필</button>
-							</Link>
+							</Link> */}
 							<LogoutButton className="btn-mobile-menu mt-2" />
 						</>
 					)}

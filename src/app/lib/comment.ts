@@ -1,3 +1,4 @@
+'use server'
 import { getAuthenticatedUserId } from '@/app/lib/user'
 
 import {
