@@ -1,5 +1,6 @@
 import { sql } from '@vercel/postgres'
 import {
+	User,
 	Post,
 	Comment,
 	PostWithAuthor,
@@ -13,7 +14,7 @@ export async function getUser(email: string) {
 	return rows[0]
 }
 
-// signup
+// users
 export async function createUser(
 	id: string,
 	email: string,
@@ -41,6 +42,42 @@ export async function checkEmailExists(email: string) {
 export async function checkUsernameExists(name: string) {
 	const result = await sql`SELECT * FROM users WHERE name = ${name}`
 	return result.rows.length > 0
+}
+
+export async function updateUser(
+	id: string,
+	name: string,
+	hashedPassword?: string
+): Promise<void> {
+	if (hashedPassword) {
+		await sql`
+    UPDATE users
+    SET name = ${name}, password = ${hashedPassword}, updated_at = NOW()
+    WHERE id = ${id}
+		`
+	} else {
+		await sql`
+    UPDATE users
+    SET name = ${name}, updated_at = NOW()
+    WHERE id = ${id}
+		`
+	}
+}
+
+export async function deleteUser(id: string): Promise<void> {
+	try {
+		// 트랜잭션 시작
+		await sql`BEGIN`
+		await sql`DELETE FROM comments WHERE author_id = ${id}`
+		await sql`DELETE FROM posts WHERE author_id = ${id}`
+		await sql`DELETE FROM users WHERE id = ${id}`
+		await sql`COMMIT`
+	} catch (error) {
+		// 오류 발생 시 롤백
+		await sql`ROLLBACK`
+		console.error('사용자 삭제 실패:', error)
+		throw error
+	}
 }
 
 // posts
@@ -288,11 +325,8 @@ export async function deletePost(id: string): Promise<void> {
 	try {
 		// 트랜잭션 시작
 		await sql`BEGIN`
-		// 댓글 삭제
 		await sql`DELETE FROM comments WHERE post_id = ${id}`
-		// 게시글 삭제
 		await sql`DELETE FROM posts WHERE id = ${id}`
-		// 트랜잭션 커밋
 		await sql`COMMIT`
 	} catch (error) {
 		// 오류 발생 시 롤백
