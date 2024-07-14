@@ -5,13 +5,14 @@ import {
 	getPosts as dbGetPosts,
 	getPopularPosts as dbPopularPosts,
 	getPostById as dbGetPostById,
+	searchPosts as dbSearchPosts,
 	updatePost as dbUpdatePost,
 	deletePost as dbDeletePost,
+	increaseViewCount as dbIncreaseViewCount,
 	createComment as dbCreateComment,
 	getCommentsByPostId as dbGetCommentsByPostId,
 	updateComment as dbUpdateComment,
 	deleteComment as dbDeleteComment,
-	increaseViewCount as dbIncreaseViewCount,
 	getCommentById,
 } from '@/db'
 import { getServerSession } from 'next-auth/next'
@@ -68,42 +69,66 @@ export async function getPostById(id: string) {
 	}
 }
 
+export async function searchPosts(
+	searchTerm: string,
+	searchType: 'title' | 'content' | 'author',
+	page: number,
+	limit: number
+) {
+	try {
+		return await dbSearchPosts(searchTerm, searchType, page, limit)
+	} catch (error) {
+		console.error('searchPosts error:', error)
+		throw new Error('게시글 검색 중 오류가 발생했습니다.')
+	}
+}
+
+export async function updatePost(id: string, title: string, content: string) {
+	try {
+		const userId = await getAuthenticatedUserId()
+		const post = await getPostById(id)
+
+		if (!post) {
+			throw new Error('게시글을 찾을 수 없습니다.')
+		}
+
+		if (post.authorId !== userId) {
+			throw new Error('권한이 없습니다.')
+		}
+
+		return await dbUpdatePost(id, title, content)
+	} catch (error) {
+		console.error('updatePost error:', error)
+		throw new Error('게시글 수정 중 오류가 발생했습니다.')
+	}
+}
+
+export async function deletePost(id: string) {
+	try {
+		const userId = await getAuthenticatedUserId()
+		const post = await getPostById(id)
+
+		if (!post) {
+			throw new Error('게시글을 찾을 수 없습니다.')
+		}
+
+		if (post.authorId !== userId) {
+			throw new Error('권한이 없습니다.')
+		}
+
+		return await dbDeletePost(id)
+	} catch (error) {
+		console.error('deletePost error:', error)
+		throw new Error('게시글 삭제 중 오류가 발생했습니다.')
+	}
+}
+
 async function increaseViewCount(postId: string) {
 	try {
 		await dbIncreaseViewCount(postId)
 	} catch (error) {
 		console.error('increaseViewCount error:', error)
 	}
-}
-
-export async function updatePost(id: string, title: string, content: string) {
-	const userId = await getAuthenticatedUserId()
-	const post = await getPostById(id)
-
-	if (!post) {
-		throw new Error('게시글을 찾을 수 없습니다.')
-	}
-
-	if (post.authorId !== userId) {
-		throw new Error('권한이 없습니다.')
-	}
-
-	return await dbUpdatePost(id, title, content)
-}
-
-export async function deletePost(id: string) {
-	const userId = await getAuthenticatedUserId()
-	const post = await getPostById(id)
-
-	if (!post) {
-		throw new Error('게시글을 찾을 수 없습니다.')
-	}
-
-	if (post.authorId !== userId) {
-		throw new Error('권한이 없습니다.')
-	}
-
-	return await dbDeletePost(id)
 }
 
 export async function createComment(postId: string, content: string) {

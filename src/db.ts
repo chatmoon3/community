@@ -168,12 +168,105 @@ export async function getPostById(id: string): Promise<PostWithAuthor | null> {
 	} as PostWithAuthor
 }
 
-export async function increaseViewCount(postId: string): Promise<void> {
-	await sql`
-    UPDATE posts
-    SET view_count = view_count + 1
-    WHERE id = ${postId}
-  `
+export async function searchPosts(
+	searchTerm: string,
+	searchType: 'title' | 'content' | 'author',
+	page: number = 1,
+	limit: number = 10
+): Promise<{ posts: PostWithAuthor[]; total: number }> {
+	const offset = (page - 1) * limit
+
+	let query
+	let countQuery
+	if (searchType === 'title') {
+		query = sql`
+      SELECT
+        posts.id AS post_id,
+        posts.title,
+        posts.content,
+        posts.author_id,
+        posts.created_at,
+        posts.updated_at,
+        posts.view_count,
+        users.name AS author_name
+      FROM posts
+      JOIN users ON posts.author_id = users.id
+      WHERE posts.title ILIKE ${`%${searchTerm}%`}
+      ORDER BY posts.created_at DESC
+      LIMIT ${limit} OFFSET ${offset}
+    `
+		countQuery = sql`
+      SELECT COUNT(*) 
+      FROM posts
+      WHERE title ILIKE ${`%${searchTerm}%`}
+    `
+	} else if (searchType === 'content') {
+		query = sql`
+      SELECT
+        posts.id AS post_id,
+        posts.title,
+        posts.content,
+        posts.author_id,
+        posts.created_at,
+        posts.updated_at,
+        posts.view_count,
+        users.name AS author_name
+      FROM posts
+      JOIN users ON posts.author_id = users.id
+      WHERE posts.content ILIKE ${`%${searchTerm}%`}
+      ORDER BY posts.created_at DESC
+      LIMIT ${limit} OFFSET ${offset}
+    `
+		countQuery = sql`
+      SELECT COUNT(*) 
+      FROM posts
+      WHERE content ILIKE ${`%${searchTerm}%`}
+    `
+	} else if (searchType === 'author') {
+		query = sql`
+      SELECT
+        posts.id AS post_id,
+        posts.title,
+        posts.content,
+        posts.author_id,
+        posts.created_at,
+        posts.updated_at,
+        posts.view_count,
+        users.name AS author_name
+      FROM posts
+      JOIN users ON posts.author_id = users.id
+      WHERE users.name ILIKE ${`%${searchTerm}%`}
+      ORDER BY posts.created_at DESC
+      LIMIT ${limit} OFFSET ${offset}
+    `
+		countQuery = sql`
+      SELECT COUNT(*) 
+      FROM posts
+      JOIN users ON posts.author_id = users.id
+      WHERE users.name ILIKE ${`%${searchTerm}%`}
+    `
+	}
+
+	const result = await query
+	const totalResult = await countQuery
+
+	if (!result || !totalResult) {
+		throw new Error('검색 결과가 없습니다.')
+	}
+
+	return {
+		posts: result.rows.map((row) => ({
+			id: row.post_id,
+			title: row.title,
+			content: row.content,
+			authorId: row.author_id,
+			createdAt: row.created_at,
+			updatedAt: row.updated_at,
+			viewCount: row.view_count,
+			authorName: row.author_name,
+		})) as PostWithAuthor[],
+		total: parseInt(totalResult.rows[0].count),
+	}
 }
 
 export async function updatePost(
@@ -207,6 +300,14 @@ export async function deletePost(id: string): Promise<void> {
 		console.error('deletePost error:', error)
 		throw error
 	}
+}
+
+export async function increaseViewCount(postId: string): Promise<void> {
+	await sql`
+    UPDATE posts
+    SET view_count = view_count + 1
+    WHERE id = ${postId}
+  `
 }
 
 // comment

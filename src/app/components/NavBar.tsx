@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
+import SearchForm from '@/app/components/SearchForm'
 import LogOutButton from '@/app/components/LogOutButton'
 
 export default function Navbar() {
@@ -30,8 +31,7 @@ export default function Navbar() {
 				</div>
 
 				<div className="items-center hidden space-x-4 md:flex">
-					{/* 검색 기능 미구현*/}
-					{/* <input type="text" placeholder="검색" className="px-2 py-1 rounded" /> */}
+					<SearchForm isNavBar={true} className="w-64" />
 					{!session ? (
 						<>
 							<Link href="/login">
@@ -88,8 +88,7 @@ export default function Navbar() {
 						게시판
 						<span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-500 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
 					</Link>
-					{/* 검색 기능 미구현*/}
-					{/* <input type="text" placeholder="검색" className="px-2 py-1 rounded" /> */}
+					<SearchForm isNavBar={true} className="w-full" />
 					{!session ? (
 						<>
 							<Link href="/login">

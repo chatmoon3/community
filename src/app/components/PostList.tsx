@@ -4,17 +4,24 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { PostWithAuthor } from '@/types/models'
-import { getPosts } from '@/app/lib/post'
+import { getPosts, searchPosts } from '@/app/lib/post'
+import SearchForm from '@/app/components/SearchForm'
 import { customFormatDistanceToNow } from '@/utils/dateUtils'
 
 interface PostsListProps {
 	initialPosts: PostWithAuthor[]
 	initialTotal: number
+	isSearchResult?: boolean
+	searchTerm?: string
+	searchType?: 'title' | 'content' | 'author'
 }
 
 export default function PostList({
 	initialPosts,
 	initialTotal,
+	isSearchResult = false,
+	searchTerm = '',
+	searchType = 'title',
 }: PostsListProps) {
 	const [page, setPage] = useState<number>(1)
 	const { data: session } = useSession()
@@ -24,8 +31,14 @@ export default function PostList({
 		posts: PostWithAuthor[]
 		total: number
 	}>({
-		queryKey: ['posts', page],
-		queryFn: () => getPosts(page, limit),
+		queryKey: isSearchResult
+			? ['searchPosts', searchTerm, searchType, page]
+			: ['posts', page],
+		queryFn: () =>
+			isSearchResult
+				? searchPosts(searchTerm, searchType, page, limit)
+				: getPosts(page, limit),
+
 		initialData: {
 			posts: initialPosts,
 			total: initialTotal,
@@ -41,10 +54,6 @@ export default function PostList({
 		let startPage = Math.max(1, page - 2)
 		let endPage = Math.min(totalPages, startPage + 4)
 
-		if (endPage - startPage < 4) {
-			startPage = Math.max(1, endPage - 4)
-		}
-
 		for (let i = startPage; i <= endPage; i++) {
 			pageNumbers.push(i)
 		}
@@ -53,15 +62,26 @@ export default function PostList({
 	}
 
 	if (!posts) {
-		return
+		return null
 	}
 
 	return (
 		<div className="container max-w-5xl mx-auto px-4 sm:px-8">
 			<div className="py-8">
 				<div className="flex justify-between items-center mb-6">
-					<h2 className="text-2xl font-semibold leading-tight">게시판</h2>
-					{!session ? (
+					<h2 className="text-2xl font-semibold leading-tight">
+						{isSearchResult ? (
+							<>
+								<span className="font-bold">{searchTerm}</span>
+								<span className="text-lg font-light text-gray-600 ml-2">
+									검색 결과 {totalPosts}건
+								</span>
+							</>
+						) : (
+							'게시판'
+						)}
+					</h2>
+					{!session || isSearchResult ? (
 						<></>
 					) : (
 						<Link
@@ -196,6 +216,9 @@ export default function PostList({
 									다음
 								</button>
 							</div>
+						</div>
+						<div className="mt-3">
+							<SearchForm isNavBar={false} className="max-w-md mx-auto" />
 						</div>
 					</div>
 				</div>
