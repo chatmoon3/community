@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createComment, updateComment } from '@/app/lib/post'
+import { createComment, updateComment } from '@/app/lib/comment'
 import Button from '@/app/components/Button'
 
 interface CommentProps {

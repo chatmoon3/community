@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useFormState } from 'react-dom'
-import { signUp } from '@/app/lib/signup'
+import { signUp } from '@/app/lib/user'
 
 export default function SignUpForm() {
 	const [state, formAction] = useFormState(signUp, { message: '' })

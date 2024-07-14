@@ -5,12 +5,12 @@ import { useState, Suspense } from 'react'
 import { useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import SearchForm from '@/app/components/SearchForm'
-import LogOutButton from '@/app/components/LogOutButton'
+import LogoutButton from '@/app/components/LogoutButton'
 import Button from '@/app/components/Button'
 
 export default function Navbar() {
 	const [MenuOpen, setMenuOpen] = useState(false)
-	const { data: session, status } = useSession()
+	const { data: session } = useSession()
 	const pathname = usePathname()
 
 	return (
@@ -45,24 +45,23 @@ export default function Navbar() {
 					<Suspense>
 						<SearchForm isNavBar={true} className="w-64" />
 					</Suspense>
-					{status !== 'loading' &&
-						(!session ? (
-							<>
-								<Link href="/login">
-									<Button>로그인</Button>
-								</Link>
-								<Link href="/signup">
-									<Button>회원가입</Button>
-								</Link>
-							</>
-						) : (
-							<>
-								<Link href="/">
-									<Button>프로필</Button>
-								</Link>
-								<LogOutButton className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600" />
-							</>
-						))}
+					{!session ? (
+						<>
+							<Link href="/login">
+								<Button>로그인</Button>
+							</Link>
+							<Link href="/signup">
+								<Button>회원가입</Button>
+							</Link>
+						</>
+					) : (
+						<>
+							<Link href="/">
+								<Button>프로필</Button>
+							</Link>
+							<LogoutButton className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600" />
+						</>
+					)}
 				</div>
 
 				<button
@@ -113,7 +112,7 @@ export default function Navbar() {
 							<Link href="/login">
 								<button className="btn-mobile-menu mt-4">프로필</button>
 							</Link>
-							<LogOutButton className="btn-mobile-menu mt-2" />
+							<LogoutButton className="btn-mobile-menu mt-2" />
 						</>
 					)}
 				</div>
