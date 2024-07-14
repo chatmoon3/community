@@ -5,3 +5,18 @@
 body {
 	font-family: 'Noto Sans', sans-serif;
 }
+
+@layer components {
+	.btn-mobile-menu {
+		@apply w-full px-3 py-1 mt-4 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600;
+	}
+	.posts-table th {
+		@apply px-4 py-4 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider;
+	}
+	.posts-table td {
+		@apply px-5 py-5 border-b border-gray-200 bg-white;
+	}
+	.posts-table p {
+		@apply text-gray-900 whitespace-nowrap;
+	}
+}

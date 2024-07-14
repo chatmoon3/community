@@ -93,56 +93,40 @@ export default function PostList({
 				<div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
 					<div className="inline-block min-w-full rounded-lg overflow-hidden">
 						{/* 데스크탑 */}
-						<table className="min-w-full leading-normal hidden md:table">
+						<table className="posts-table min-w-full leading-normal hidden md:table">
 							<thead>
 								<tr>
-									<th className="w-16 px-4 py-4 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-										번호
-									</th>
-									<th className="flex-1 px-4 py-4 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-										제목
-									</th>
-									<th className="w-32 px-4 py-4 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-										작성자
-									</th>
-									<th className="w-32 px-4 py-4 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-										작성시간
-									</th>
-									<th className="w-20 px-4 py-4 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-										조회수
-									</th>
+									<th className="w-16">번호</th>
+									<th className="flex-1">제목</th>
+									<th className="w-32">작성자</th>
+									<th className="w-32">작성시간</th>
+									<th className="w-20">조회수</th>
 								</tr>
 							</thead>
 							<tbody>
 								{posts.map((post, index) => (
 									<tr key={post.id}>
-										<td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-											<p className="text-gray-900 whitespace-no-wrap">
-												{totalPosts - (page - 1) * limit - index}
-											</p>
+										<td className="text-sm">
+											<p>{totalPosts - (page - 1) * limit - index}</p>
 										</td>
-										<td className="px-5 py-5 border-b border-gray-200 bg-white">
+										<td>
 											<Link
 												href={`/posts/${post.id}`}
-												className="text-gray-900 whitespace-no-wrap hover:text-blue-600"
+												className="text-gray-900 whitespace-no-wrap hover:font-semibold hover:text-blue-600 "
 											>
 												{post.title}
 											</Link>
 										</td>
-										<td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-											<p className="text-gray-900 whitespace-no-wrap">
-												{post.authorName}
-											</p>
+										<td className="text-sm">
+											<p>{post.authorName}</p>
 										</td>
-										<td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-											<p className="text-gray-900 whitespace-no-wrap">
+										<td className="text-sm">
+											<p>
 												{customFormatDistanceToNow(new Date(post.createdAt))}
 											</p>
 										</td>
-										<td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-											<p className="text-gray-900 whitespace-no-wrap">
-												{post.viewCount}
-											</p>
+										<td className="text-sm">
+											<p>{post.viewCount}</p>
 										</td>
 									</tr>
 								))}
