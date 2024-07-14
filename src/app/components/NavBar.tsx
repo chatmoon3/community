@@ -8,7 +8,7 @@ import LogOutButton from '@/app/components/LogOutButton'
 
 export default function Navbar() {
 	const [MenuOpen, setMenuOpen] = useState(false)
-	const { data: session } = useSession()
+	const { data: session, status } = useSession()
 
 	return (
 		<nav className="relative p-4 bg-white shadow-md">
@@ -32,29 +32,30 @@ export default function Navbar() {
 
 				<div className="items-center hidden space-x-4 md:flex">
 					<SearchForm isNavBar={true} className="w-64" />
-					{!session ? (
-						<>
-							<Link href="/login">
-								<button className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600">
-									로그인
-								</button>
-							</Link>
-							<Link href="/signup">
-								<button className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600">
-									회원가입
-								</button>
-							</Link>
-						</>
-					) : (
-						<>
-							<Link href="/">
-								<button className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600">
-									프로필
-								</button>
-							</Link>
-							<LogOutButton className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600" />
-						</>
-					)}
+					{status !== 'loading' &&
+						(!session ? (
+							<>
+								<Link href="/login">
+									<button className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600">
+										로그인
+									</button>
+								</Link>
+								<Link href="/signup">
+									<button className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600">
+										회원가입
+									</button>
+								</Link>
+							</>
+						) : (
+							<>
+								<Link href="/">
+									<button className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600">
+										프로필
+									</button>
+								</Link>
+								<LogOutButton className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600" />
+							</>
+						))}
 				</div>
 
 				<button
