@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createPost, updatePost } from '@/app/lib/post'
+import Button from '@/app/components/Button'
 
 interface PostFormProps {
 	initialPost?: {
@@ -107,12 +108,7 @@ export default function PostForm({ initialPost }: PostFormProps) {
 							></textarea>
 						</div>
 						<div className="flex justify-end">
-							<button
-								type="submit"
-								className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600"
-							>
-								{initialPost ? '수정' : '작성'}
-							</button>
+							<Button type="submit">{initialPost ? '수정' : '작성'}</Button>
 						</div>
 					</form>
 				</div>

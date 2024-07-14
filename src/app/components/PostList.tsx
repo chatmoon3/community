@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react'
 import { PostWithAuthor } from '@/types/models'
 import { getPosts, searchPosts } from '@/app/lib/post'
 import SearchForm from '@/app/components/SearchForm'
+import Button from '@/app/components/Button'
 import { customFormatDistanceToNow } from '@/utils/dateUtils'
 
 interface PostsListProps {
@@ -84,11 +85,8 @@ export default function PostList({
 					{!session || isSearchResult ? (
 						<></>
 					) : (
-						<Link
-							href="/posts/create"
-							className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600"
-						>
-							글쓰기
+						<Link href="/posts/create">
+							<Button>글쓰기</Button>
 						</Link>
 					)}
 				</div>

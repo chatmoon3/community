@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createComment, updateComment } from '@/app/lib/post'
+import Button from '@/app/components/Button'
 
 interface CommentProps {
 	postId: string
@@ -100,20 +101,11 @@ export default function CommentForm({
 			</div>
 			<div className="flex justify-end">
 				{isEditing && (
-					<button
-						type="button"
-						onClick={onCancel}
-						className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600 disabled:bg-blue-300 mr-2"
-					>
-						취소하기
-					</button>
+					<Button type="button" onClick={onCancel} className="mr-2">
+						취소
+					</Button>
 				)}
-				<button
-					type="submit"
-					className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600 disabled:bg-blue-300"
-				>
-					{isEditing ? '수정하기' : '작성하기'}
-				</button>
+				<Button type="submit">{isEditing ? '수정' : '등록'}</Button>
 			</div>
 		</form>
 	)

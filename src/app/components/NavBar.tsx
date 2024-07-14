@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import SearchForm from '@/app/components/SearchForm'
 import LogOutButton from '@/app/components/LogOutButton'
+import Button from '@/app/components/Button'
 
 export default function Navbar() {
 	const [MenuOpen, setMenuOpen] = useState(false)
@@ -36,22 +37,16 @@ export default function Navbar() {
 						(!session ? (
 							<>
 								<Link href="/login">
-									<button className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600">
-										로그인
-									</button>
+									<Button>로그인</Button>
 								</Link>
 								<Link href="/signup">
-									<button className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600">
-										회원가입
-									</button>
+									<Button>회원가입</Button>
 								</Link>
 							</>
 						) : (
 							<>
 								<Link href="/">
-									<button className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600">
-										프로필
-									</button>
+									<Button>프로필</Button>
 								</Link>
 								<LogOutButton className="px-4 py-2 font-semibold text-sm bg-blue-500 text-white rounded-full shadow-sm hover:bg-blue-600" />
 							</>
