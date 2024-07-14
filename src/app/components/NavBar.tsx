@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import SearchForm from '@/app/components/SearchForm'
@@ -42,7 +42,9 @@ export default function Navbar() {
 				</div>
 
 				<div className="items-center hidden space-x-4 md:flex">
-					<SearchForm isNavBar={true} className="w-64" />
+					<Suspense>
+						<SearchForm isNavBar={true} className="w-64" />
+					</Suspense>
 					{status !== 'loading' &&
 						(!session ? (
 							<>
@@ -94,7 +96,9 @@ export default function Navbar() {
 						게시판
 						<span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-500 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
 					</Link>
-					<SearchForm isNavBar={true} className="w-full" />
+					<Suspense>
+						<SearchForm isNavBar={true} className="w-full" />
+					</Suspense>
 					{!session ? (
 						<>
 							<Link href="/login">

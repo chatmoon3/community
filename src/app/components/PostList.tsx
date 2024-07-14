@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { PostWithAuthor } from '@/types/models'
@@ -200,7 +200,9 @@ export default function PostList({
 							</div>
 						</div>
 						<div className="mt-3">
-							<SearchForm isNavBar={false} className="max-w-md mx-auto" />
+							<Suspense>
+								<SearchForm isNavBar={false} className="max-w-md mx-auto" />
+							</Suspense>
 						</div>
 					</div>
 				</div>
