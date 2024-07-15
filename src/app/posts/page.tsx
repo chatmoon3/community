@@ -1,7 +1,7 @@
 import { getPosts } from '@/app/lib/post'
 import PostList from '@/app/components/PostList'
 
-export const revalidate = 60
+export const revalidate = 0
 
 export default async function PostsPage() {
 	const initialPage = 1

@@ -1,6 +1,5 @@
 import { sql } from '@vercel/postgres'
 import {
-	User,
 	Post,
 	Comment,
 	PostWithAuthor,
@@ -23,8 +22,8 @@ export async function createUser(
 ) {
 	try {
 		const result = await sql`
-      INSERT INTO users (id, email, password, name)
-      VALUES (${id}, ${email}, ${hashedPassword}, ${name})
+      INSERT INTO users (id, email, password, name, created_at, updated_at)
+      VALUES (${id}, ${email}, ${hashedPassword}, ${name}, NOW(), NOW())
 			RETURNING id
     `
 		return result.rows[0].id
@@ -44,23 +43,49 @@ export async function checkUsernameExists(name: string) {
 	return result.rows.length > 0
 }
 
-export async function updateUser(
+export async function updateUsername(
 	id: string,
-	name: string,
-	hashedPassword?: string
+	newUsername: string
 ): Promise<void> {
-	if (hashedPassword) {
+	await sql`
+      UPDATE users
+      SET name = ${newUsername}, updated_at = NOW()
+      WHERE id = ${id}
+    `
+}
+
+export async function getStoredPassword(id: string) {
+	try {
+		const result = await sql`
+            SELECT password
+            FROM users
+            WHERE id = ${id}
+        `
+
+		if (result.rows.length === 0) {
+			return null
+		}
+
+		return result.rows[0].password
+	} catch (error) {
+		console.error('비밀번호 확인 실패:', error)
+		throw error
+	}
+}
+
+export async function updatePassword(
+	id: string,
+	newHashedPassword: string
+): Promise<void> {
+	try {
 		await sql`
-    UPDATE users
-    SET name = ${name}, password = ${hashedPassword}, updated_at = NOW()
-    WHERE id = ${id}
-		`
-	} else {
-		await sql`
-    UPDATE users
-    SET name = ${name}, updated_at = NOW()
-    WHERE id = ${id}
-		`
+      UPDATE users
+      SET password = ${newHashedPassword}, updated_at = NOW()
+      WHERE id = ${id}
+    `
+	} catch (error) {
+		console.error('비밀번호 업데이트 실패:', error)
+		throw error
 	}
 }
 

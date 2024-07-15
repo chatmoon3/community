@@ -17,6 +17,7 @@ export default function SearchForm({
 
 	const [search, setSearch] = useState('')
 	const [searchType, setSearchType] = useState('')
+	const [isFocused, setIsFocused] = useState(false)
 
 	useEffect(() => {
 		setSearch(searchParams.get('keyword') || '')
@@ -61,8 +62,12 @@ export default function SearchForm({
 					type="text"
 					value={search}
 					onChange={(e) => setSearch(e.target.value)}
+					onFocus={() => setIsFocused(true)}
+					onBlur={() => setIsFocused(false)}
 					placeholder="검색"
-					className="w-full h-10 px-4 py-2 pr-10 border border-gray-300"
+					className={`w-full h-10 px-4 py-2 pr-10 ${
+						isFocused ? 'border-2 border-blue-600' : 'border border-gray-300'
+					} focus:outline-none transition-colors duration-200`}
 				/>
 				<button
 					type="submit"

@@ -1,7 +1,7 @@
 import { getPostById } from '@/db'
 import PostView from '@/app/components/PostView'
 
-export const revalidate = 60
+export const revalidate = 0
 
 export default async function PostPageById({
 	params,
