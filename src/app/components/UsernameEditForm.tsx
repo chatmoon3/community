@@ -54,15 +54,12 @@ export default function UsernameEditForm() {
 		<form onSubmit={handleSubmit} className="space-y-4">
 			<h2 className="text-2xl font-bold">닉네임 수정</h2>
 			<div>
-				<label htmlFor="newUsername" className="block mb-2">
-					새 닉네임
-				</label>
 				<input
-					type="text"
+					className="w-full px-3 py-2 border rounded"
 					id="newUsername"
+					type="text"
 					value={newUsername}
 					onChange={(e) => setNewUsername(e.target.value)}
-					className="w-full px-3 py-2 border rounded"
 					required
 				/>
 			</div>

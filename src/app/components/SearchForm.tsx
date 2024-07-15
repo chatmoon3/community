@@ -6,11 +6,13 @@ import { useState, useEffect } from 'react'
 interface SearchFormProps {
 	isNavBar?: boolean
 	className?: string
+	onClick?: () => void
 }
 
 export default function SearchForm({
 	isNavBar = false,
 	className = '',
+	onClick,
 }: SearchFormProps) {
 	const router = useRouter()
 	const searchParams = useSearchParams()
@@ -40,6 +42,10 @@ export default function SearchForm({
 		params.set('type', searchType)
 
 		router.push(`/search?${params.toString()}`)
+
+		if (onClick) {
+			onClick()
+		}
 	}
 
 	return (
@@ -60,11 +66,11 @@ export default function SearchForm({
 			<div className="relative flex-grow">
 				<input
 					type="text"
+					placeholder="검색"
 					value={search}
 					onChange={(e) => setSearch(e.target.value)}
 					onFocus={() => setIsFocused(true)}
 					onBlur={() => setIsFocused(false)}
-					placeholder="검색"
 					className={`w-full h-10 px-4 py-2 pr-10 ${
 						isFocused ? 'border-2 border-blue-600' : 'border border-gray-300'
 					} focus:outline-none transition-colors duration-200`}

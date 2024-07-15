@@ -51,11 +51,11 @@ export default function PasswordEditForm() {
 					현재 비밀번호
 				</label>
 				<input
-					type="password"
+					className="w-full px-3 py-2 border rounded"
 					id="currentPassword"
+					type="password"
 					value={currentPassword}
 					onChange={(e) => setCurrentPassword(e.target.value)}
-					className="w-full px-3 py-2 border rounded"
 					required
 				/>
 			</div>
@@ -64,11 +64,13 @@ export default function PasswordEditForm() {
 					새 비밀번호
 				</label>
 				<input
-					type="password"
+					className="w-full px-3 py-2 border rounded"
 					id="newPassword"
+					type="password"
+					placeholder="6자 이상 입력하세요."
 					value={newPassword}
 					onChange={(e) => setNewPassword(e.target.value)}
-					className="w-full px-3 py-2 border rounded"
+					minLength={6}
 					required
 				/>
 			</div>
@@ -77,11 +79,12 @@ export default function PasswordEditForm() {
 					새 비밀번호 확인
 				</label>
 				<input
-					type="password"
+					className="w-full px-3 py-2 border rounded"
 					id="confirmPassword"
+					type="password"
+					placeholder="비밀번호를 한번 더 입력하세요."
 					value={confirmPassword}
 					onChange={(e) => setConfirmPassword(e.target.value)}
-					className="w-full px-3 py-2 border rounded"
 					required
 				/>
 			</div>

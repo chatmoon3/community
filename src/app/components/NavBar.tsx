@@ -28,8 +28,18 @@ export default function Navbar() {
 		}
 	}, [])
 
+	useEffect(() => {
+		if (session?.user) {
+			setAccountMenuOpen(false)
+		}
+	}, [session])
+
 	const closeAccountMenu = () => {
 		setAccountMenuOpen(false)
+	}
+
+	const closeMobileMenu = () => {
+		setMobileMenuOpen(false)
 	}
 
 	return (
@@ -105,7 +115,10 @@ export default function Navbar() {
 										회원탈퇴
 									</Link>
 									<hr className="my-1" />
-									<LogoutButton className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" />
+									<LogoutButton
+										className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+										onClick={closeAccountMenu}
+									/>
 								</div>
 							)}
 						</div>
@@ -142,7 +155,7 @@ export default function Navbar() {
 							<Link href="/" className="text-2xl font-bold text-blue-600">
 								COMMUNITY
 							</Link>
-							<button onClick={() => setMobileMenuOpen(false)}>
+							<button onClick={closeMobileMenu}>
 								<svg
 									className="w-6 h-6"
 									fill="none"
@@ -159,29 +172,40 @@ export default function Navbar() {
 								</svg>
 							</button>
 						</div>
-						<Link href="/" className="py-2 text-gray-800 hover:bg-gray-100">
+						<Link
+							href="/"
+							className="py-2 text-gray-800 hover:bg-gray-100"
+							onClick={closeMobileMenu}
+						>
 							홈
 						</Link>
 						<Link
 							href="/posts"
 							className="py-2 text-gray-800 hover:bg-gray-100"
+							onClick={closeMobileMenu}
 						>
 							게시판
 						</Link>
 						<Suspense>
-							<SearchForm isNavBar={true} className="w-full my-2" />
+							<SearchForm
+								isNavBar={true}
+								className="w-full my-2"
+								onClick={closeMobileMenu}
+							/>
 						</Suspense>
 						{!session ? (
 							<>
 								<Link
 									href="/login"
 									className="py-2 text-gray-800 hover:bg-gray-100"
+									onClick={closeMobileMenu}
 								>
 									로그인
 								</Link>
 								<Link
 									href="/signup"
 									className="py-2 text-gray-800 hover:bg-gray-100"
+									onClick={closeMobileMenu}
 								>
 									회원가입
 								</Link>
@@ -193,24 +217,30 @@ export default function Navbar() {
 									<Link
 										href="/profile/edit"
 										className="block py-1 text-gray-600 text-sm hover:bg-gray-100"
+										onClick={closeMobileMenu}
 									>
 										닉네임 수정
 									</Link>
 									<Link
 										href="/profile/change-password"
 										className="block py-1 text-gray-600 text-sm hover:bg-gray-100"
+										onClick={closeMobileMenu}
 									>
 										비밀번호 변경
 									</Link>
 									<Link
 										href="/profile/delete"
 										className="block py-1 text-gray-600 text-sm hover:bg-gray-100"
+										onClick={closeMobileMenu}
 									>
 										회원탈퇴
 									</Link>
 								</div>
 								<hr className="my-2" />
-								<LogoutButton className="py-2 text-gray-800 hover:bg-gray-100" />
+								<LogoutButton
+									className="py-2 text-gray-800 hover:bg-gray-100"
+									onClick={closeMobileMenu}
+								/>
 							</>
 						)}
 					</div>

@@ -18,23 +18,22 @@ export default function SignUpForm() {
 		}
 	}, [password, confirmPassword])
 
+	const labelStyle = 'block mt-5 mb-3 font-medium text-gray-900 text-xm'
+
 	const inputStyle =
 		'block w-full rounded-md border border-gary-200 py-3 pl-5 text-sm outline-2 placeholder:text-gray-500'
 
 	return (
-		<main className="flex items-center justify-center min-h-[calc(100vh-90px)]">
+		<main className="flex items-center justify-center min-h-[calc(80vh)]">
 			<div className="w-full max-w-[400px] flex-col">
-				<div className="flex items-center h-6 p-6 text-white bg-blue-600 rounded-md ">
+				<div className="flex justify-center text-lg leading-tight h-8">
 					회원가입
 				</div>
 				<form action={formAction} className="space-y-3">
-					<div className="flex-1 px-6 pt-2 pb-4 rounded-lg bg-gray-50">
+					<div className="flex-1 px-6 pt-2 pb-4 rounded-lg">
 						<div className="w-full">
 							<div>
-								<label
-									className="block mt-5 mb-3 font-normal text-gray-900 text-xm"
-									htmlFor="email"
-								>
+								<label className={labelStyle} htmlFor="email">
 									이메일
 								</label>
 								<div className="relative">
@@ -49,10 +48,7 @@ export default function SignUpForm() {
 								</div>
 							</div>
 							<div>
-								<label
-									className="block mt-5 mb-3 font-medium text-gray-900 text-xm"
-									htmlFor="name"
-								>
+								<label className={labelStyle} htmlFor="name">
 									닉네임
 								</label>
 								<div className="relative">
@@ -67,10 +63,7 @@ export default function SignUpForm() {
 								</div>
 							</div>
 							<div>
-								<label
-									className="block mt-5 mb-3 font-medium text-gray-900 text-xm"
-									htmlFor="password"
-								>
+								<label className={labelStyle} htmlFor="password">
 									비밀번호
 								</label>
 								<div className="relative">
@@ -88,10 +81,7 @@ export default function SignUpForm() {
 								</div>
 							</div>
 							<div>
-								<label
-									className="block mt-5 mb-3 font-medium text-gray-900 text-xm"
-									htmlFor="confirmPassword"
-								>
+								<label className={labelStyle} htmlFor="confirmPassword">
 									비밀번호 확인
 								</label>
 								<div className="relative">
@@ -113,7 +103,7 @@ export default function SignUpForm() {
 						</div>
 						<button
 							type="submit"
-							className="w-full mt-8 bg-blue-300 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+							className="w-full mt-8 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
 						>
 							가입하기
 						</button>

@@ -3,7 +3,14 @@
 import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
-export default function LogoutButton({ className = '' }) {
+interface LogoutButtonProps {
+	className?: string
+	onClick?: () => void
+}
+export default function LogoutButton({
+	className = '',
+	onClick,
+}: LogoutButtonProps) {
 	const router = useRouter()
 
 	const handleSignOut = async () => {
@@ -12,7 +19,13 @@ export default function LogoutButton({ className = '' }) {
 	}
 
 	return (
-		<button onClick={handleSignOut} className={className}>
+		<button
+			onClick={(e) => {
+				if (onClick) onClick()
+				handleSignOut()
+			}}
+			className={className}
+		>
 			로그아웃
 		</button>
 	)
