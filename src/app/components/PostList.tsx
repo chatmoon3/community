@@ -55,6 +55,10 @@ export default function PostList({
 		let startPage = Math.max(1, page - 2)
 		let endPage = Math.min(totalPages, startPage + 4)
 
+		if (endPage - startPage < 4) {
+			startPage = Math.max(1, endPage - 4)
+		}
+
 		for (let i = startPage; i <= endPage; i++) {
 			pageNumbers.push(i)
 		}
@@ -169,7 +173,11 @@ export default function PostList({
 							<div className="inline-flex mt-2 xs:mt-0">
 								<button
 									onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-									className="px-4 py-2 text-sm font-semibold text-gray-800"
+									className={`px-4 py-2 text-sm font-semibold ${
+										page === 1
+											? 'text-gray-300 cursor-not-allowed'
+											: 'text-gray-800 hover:text-blue-500'
+									}`}
 									disabled={page === 1}
 								>
 									이전
@@ -178,7 +186,11 @@ export default function PostList({
 									<button
 										key={pageNumber}
 										onClick={() => setPage(pageNumber)}
-										className={`px-4 py-2 text-sm font-semibold text-gray-800 relative group`}
+										className={`px-4 py-2 text-sm font-semibold relative group ${
+											page === pageNumber
+												? 'text-blue-500'
+												: 'text-gray-800 hover:text-blue-500'
+										}`}
 									>
 										{pageNumber}
 										<span
@@ -192,7 +204,11 @@ export default function PostList({
 									onClick={() =>
 										setPage((prev) => Math.min(prev + 1, totalPages))
 									}
-									className="px-4 py-2 text-sm font-semibold text-gray-800"
+									className={`px-4 py-2 text-sm font-semibold ${
+										page === totalPages
+											? 'text-gray-300 cursor-not-allowed'
+											: 'text-gray-800 hover:text-blue-500'
+									}`}
 									disabled={page === totalPages}
 								>
 									다음
