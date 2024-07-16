@@ -75,7 +75,7 @@ export default function PostView({ post: initialPost }: PostViewProps) {
 				</div>
 			</div>
 
-			<p className="text-gray-700 my-16">{post.content}</p>
+			<p className="text-gray-700 my-16 whitespace-pre-wrap">{post.content}</p>
 			<div className="flex items-center mb-2">
 				<div className="flex items-center space-x-2 text-sm text-gray-500 mb-2">
 					<span>조회 수 {post.viewCount}</span>
@@ -86,7 +86,7 @@ export default function PostView({ post: initialPost }: PostViewProps) {
 
 			<div className="pt-4 border-t-4">
 				<CommentList postId={post.id} />
-				<CommentForm postId={post.id} />
+				{session && <CommentForm postId={post.id} />}
 			</div>
 		</div>
 	)

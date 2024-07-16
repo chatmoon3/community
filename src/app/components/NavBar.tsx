@@ -152,7 +152,11 @@ export default function Navbar() {
 				<div className="fixed inset-0 bg-gray-800 bg-opacity-75 z-50">
 					<div className="flex flex-col h-full bg-white p-4">
 						<div className="flex justify-between items-center mb-4">
-							<Link href="/" className="text-2xl font-bold text-blue-600">
+							<Link
+								href="/"
+								className="text-2xl font-bold text-blue-600"
+								onClick={closeMobileMenu}
+							>
 								COMMUNITY
 							</Link>
 							<button onClick={closeMobileMenu}>

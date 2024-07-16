@@ -86,7 +86,9 @@ export default function CommentList({ postId }: { postId: string }) {
 										</div>
 									)}
 								</div>
-								<p className="text-gray-700">{comment.content}</p>
+								<p className="text-gray-700 whitespace-pre-wrap">
+									{comment.content}
+								</p>
 							</div>
 						)}
 					</li>

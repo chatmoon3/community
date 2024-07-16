@@ -52,7 +52,10 @@ export default function PostForm({ initialPost }: PostFormProps) {
 			content: string
 		}) => updatePost(id, title, content),
 		onSuccess: (_, variables) => {
-			queryClient.invalidateQueries({ queryKey: ['posts', variables.id] })
+			queryClient.invalidateQueries({ queryKey: ['post', variables.id] })
+
+			// 게시물 목록 쿼리 무효화
+			queryClient.invalidateQueries({ queryKey: ['posts'] })
 			router.push(`/posts/${variables.id}`)
 		},
 		onError: (error) => {
